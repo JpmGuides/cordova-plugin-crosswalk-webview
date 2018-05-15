@@ -20,12 +20,15 @@
     <!-- android -->
     <platform name="android">
         <preference name="XWALK_VERSION" default="23+"/>
+        <preference name="MODERN_CHROME_ENTRY" default="index.html"/>
         <preference name="XWALK_LITEVERSION" default="xwalk_core_library_canary:17+"/>
         <preference name="XWALK_COMMANDLINE" default="--disable-pull-to-refresh-effect"/>
         <preference name="XWALK_MODE" default="embedded" />
         <preference name="XWALK_MULTIPLEAPK" default="true" />
         <config-file target="res/xml/config.xml" parent="/*">
             <preference name="webView" value="org.crosswalk.engine.XWalkWebViewEngine"/>
+            <preference name="webView" value="org.crosswalk.engine.XWalkBridgeEngine"/>
+            <preference name="modernChromeEntry" value="$MODERN_CHROME_ENTRY"/>
             <preference name="xwalkVersion" value="$XWALK_VERSION"/>
             <preference name="xwalkLiteVersion" value="$XWALK_LITEVERSION"/>
             <preference name="xwalkCommandLine" value="$XWALK_COMMANDLINE"/>
@@ -39,6 +42,12 @@
             <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
         </config-file>
 
+        <edit-config file="AndroidManifest.xml" target="/manifest/application/activity" mode="merge">
+            <activity android:name="org.crosswalk.engine.XWalkMainActivity" />
+        </edit-config>
+
+        <source-file src="platforms/android/src/org/crosswalk/engine/XWalkMainActivity.java" target-dir="src/org/crosswalk/engine"/>
+        <source-file src="platforms/android/src/org/crosswalk/engine/XWalkBridgeEngine.java" target-dir="src/org/crosswalk/engine"/>
         <source-file src="platforms/android/src/org/crosswalk/engine/XWalkWebViewEngine.java" target-dir="src/org/crosswalk/engine"/>
         <source-file src="platforms/android/src/org/crosswalk/engine/XWalkFileChooser.java" target-dir="src/org/crosswalk/engine"/>
         <source-file src="platforms/android/src/org/crosswalk/engine/XWalkExposedJsApi.java" target-dir="src/org/crosswalk/engine"/>
